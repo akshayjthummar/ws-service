@@ -1,5 +1,5 @@
-import { Consumer, EachMessagePayload, Kafka } from "kafkajs";
-import { MessageBroker } from "../types/broker";
+import { Consumer, EachMessagePayload, Kafka } from 'kafkajs';
+import { MessageBroker } from '../types/broker';
 
 export class KafkaBroker implements MessageBroker {
   private consumer: Consumer;
@@ -28,11 +28,7 @@ export class KafkaBroker implements MessageBroker {
     await this.consumer.subscribe({ topics, fromBeginning });
 
     await this.consumer.run({
-      eachMessage: async ({
-        topic,
-        partition,
-        message,
-      }: EachMessagePayload) => {
+      eachMessage: async ({ topic, partition, message }: EachMessagePayload) => {
         // Logic to handle incoming messages.
         console.log({
           value: message.value.toString(),
