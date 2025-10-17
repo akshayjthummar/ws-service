@@ -30,11 +30,19 @@ export class KafkaBroker implements MessageBroker {
     await this.consumer.run({
       eachMessage: async ({ topic, partition, message }: EachMessagePayload) => {
         // Logic to handle incoming messages.
-        console.log({
-          value: message.value.toString(),
-          topic,
-          partition,
-        });
+        try {
+          const value = message.value?.toString(); // Convert Buffer to string
+          const data = value ? JSON.parse(value) : null; // Parse JSON safely
+
+          console.log({
+            topic,
+            partition,
+
+            value: data, // Human-readable
+          });
+        } catch (err) {
+          console.error('Error parsing Kafka message:', err);
+        }
       },
     });
   }
