@@ -1,5 +1,6 @@
 import { Consumer, EachMessagePayload, Kafka } from 'kafkajs';
 import { MessageBroker } from '../types/broker';
+import ws from '../../src/socket';
 
 export class KafkaBroker implements MessageBroker {
   private consumer: Consumer;
@@ -32,14 +33,17 @@ export class KafkaBroker implements MessageBroker {
         // Logic to handle incoming messages.
         try {
           const value = message.value?.toString(); // Convert Buffer to string
-          const data = value ? JSON.parse(value) : null; // Parse JSON safely
 
-          console.log({
-            topic,
-            partition,
-
-            value: data, // Human-readable
-          });
+          switch (topic) {
+            case 'order':
+              {
+                const order = value ? JSON.parse(value) : null;
+                ws.io.to(order.data.tenantId).emit('update-order', order);
+              }
+              break;
+            default:
+              console.log('Doing nothing...');
+          }
         } catch (err) {
           console.error('Error parsing Kafka message:', err);
         }
