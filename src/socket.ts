@@ -1,10 +1,16 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import config from 'config';
 
 const wsServer = createServer();
 
+const ALLOWED_DOMAIN = [
+  config.get('domain.ADMIN_DOMAIN') as string,
+  config.get('domain.CLIENT_DOMAIN') as string,
+];
+
 const io = new Server(wsServer, {
-  cors: { origin: ['http://localhost:3001', 'http://localhost:5103', 'http://localhost:5173'] },
+  cors: { origin: ALLOWED_DOMAIN },
 });
 
 io.on('connection', (socket) => {
