@@ -1,0 +1,11 @@
+server:
+  port: 5504
+kafka:
+  broker:
+    - localhost:9092
+  sasl:
+    username: ''
+    password: ''
+domain:
+  ADMIN_DOMAIN: http://localhost:3001
+  CLIENT_DOMAIN: http://localhost:3000
