@@ -46,6 +46,7 @@ export class KafkaBroker implements MessageBroker {
     await this.consumer.subscribe({ topics, fromBeginning });
 
     await this.consumer.run({
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       eachMessage: async ({ topic, partition, message }: EachMessagePayload) => {
         // Logic to handle incoming messages.
         try {
